@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.venv/
+
+.env
+config.toml
+
+
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+.idea/
+.vscode/
+.DS_Store

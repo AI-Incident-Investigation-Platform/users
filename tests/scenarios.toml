@@ -1,0 +1,227 @@
+[[scenario]]
+id = "ARCH-IMPORTS-001"
+title = "core не импортирует api, кроме DI-провайдеров"
+layer = "unit"
+domain = "architecture"
+
+[[scenario]]
+id = "ARCH-IMPORTS-002"
+title = "API-домены не импортируют друг друга"
+layer = "unit"
+domain = "architecture"
+
+[[scenario]]
+id = "ARCH-IMPORTS-003"
+title = "Роутеры не трогают слой БД"
+layer = "unit"
+domain = "architecture"
+
+[[scenario]]
+id = "ARCH-IMPORTS-004"
+title = "В src только абсолютные импорты"
+layer = "unit"
+domain = "architecture"
+
+[[scenario]]
+id = "ARCH-DI-001"
+title = "Каждая зависимость ручки зарегистрирована в контейнере"
+layer = "unit"
+domain = "architecture"
+
+[[scenario]]
+id = "CONFIG-001"
+title = "Без обязательных настроек сервис не стартует"
+layer = "unit"
+domain = "config"
+
+[[scenario]]
+id = "API-ERROR-001"
+title = "Ошибка отдаётся конвертом error с code, message, request_id и details; request_id совпадает с X-Request-ID, контекст ошибки наружу не уходит"
+layer = "unit"
+domain = "api"
+
+[[scenario]]
+id = "API-ERROR-002"
+title = "Ошибка валидации перечисляет поля в errors[]"
+layer = "unit"
+domain = "api"
+
+[[scenario]]
+id = "API-ERROR-003"
+title = "Непредвиденная ошибка скрывает детали, но отдаёт request_id в теле и заголовке"
+layer = "unit"
+domain = "api"
+
+[[scenario]]
+id = "HEALTH-001"
+title = "/ready проверяет БД и кэш"
+layer = "integration"
+domain = "health"
+
+[[scenario]]
+id = "METRICS-001"
+title = "/metrics считает запросы по шаблону маршрута и ошибки по коду, без health и самого /metrics"
+layer = "integration"
+domain = "metrics"
+
+[[scenario]]
+id = "API-LOG-001"
+title = "Неожиданная ошибка записывается один раз с контекстом, длительностью и безопасным стеком"
+layer = "unit"
+domain = "api"
+
+[[scenario]]
+id = "API-LOG-003"
+title = "Параллельные запросы изолируют пользователя, успешные HTTP не засоряют INFO"
+layer = "unit"
+domain = "api"
+
+[[scenario]]
+id = "API-LOG-004"
+title = "Форматтер защищает служебные поля и добавляет текущий спан"
+layer = "unit"
+domain = "api"
+
+[[scenario]]
+id = "API-LOG-005"
+title = "Медленный успешный запрос виден на WARNING"
+layer = "unit"
+domain = "api"
+
+[[scenario]]
+id = "API-ERROR-004"
+title = "Перегрузка — 503 со своим code и заголовком Retry-After"
+layer = "unit"
+domain = "api"
+
+[[scenario]]
+id = "API-ADMISSION-001"
+title = "Запрос сверх предела одновременных сразу получает 503 с Retry-After, пробы проходят, освободившийся слот принимает снова"
+layer = "unit"
+domain = "api"
+
+[[scenario]]
+id = "DB-POOL-001"
+title = "Исчерпанный пул соединений — недоступность БД (503), а не непредвиденная ошибка"
+layer = "integration"
+domain = "db"
+
+[[scenario]]
+id = "DB-TIMEOUT-001"
+title = "Превышение statement_timeout — недоступность БД (503), а не непредвиденная ошибка"
+layer = "integration"
+domain = "db"
+
+[[scenario]]
+id = "API-ERROR-005"
+title = "Лимит — 429 с Retry-After, отказ по сроку — 410"
+layer = "unit"
+domain = "api"
+
+[[scenario]]
+id = "AUTH-ORIGIN-001"
+title = "Изменяющий запрос к /api без разрешённого Origin получает 403, вызов сервиса с Authorization и GET проходят"
+layer = "unit"
+domain = "security"
+
+[[scenario]]
+id = "SEC-TOKEN-001"
+title = "Токен auth с живой сессией принимается"
+layer = "unit"
+domain = "security"
+
+[[scenario]]
+id = "SEC-TOKEN-002"
+title = "Чужая аудитория, издатель, ключ, неизвестный kid или истёкший токен — 401"
+layer = "unit"
+domain = "security"
+
+[[scenario]]
+id = "SEC-TOKEN-003"
+title = "Токен отозванной сессии без пропуска в кэше — 401"
+layer = "unit"
+domain = "security"
+
+[[scenario]]
+id = "SEC-TOKEN-004"
+title = "Недоступный кэш отклоняет даже валидный токен"
+layer = "unit"
+domain = "security"
+
+[[scenario]]
+id = "SEC-JWKS-001"
+title = "Неизвестный kid перечитывает JWKS не чаще раза в интервал"
+layer = "unit"
+domain = "security"
+
+[[scenario]]
+id = "SEC-JWKS-002"
+title = "Недоступный auth при неизвестном ключе — 503, а не 401"
+layer = "unit"
+domain = "security"
+
+[[scenario]]
+id = "USERS-EVENT-001"
+title = "Регистрация в auth создаёт профиль один раз, почту меняет только более новое событие"
+layer = "integration"
+domain = "users"
+
+[[scenario]]
+id = "USERS-EVENT-002"
+title = "Занятый юзернейм из почты получает цифры в конце"
+layer = "integration"
+domain = "users"
+
+[[scenario]]
+id = "USERS-EVENT-003"
+title = "Битое событие уходит в dead-letter, а не повторяется"
+layer = "integration"
+domain = "users"
+
+[[scenario]]
+id = "USERS-PROFILE-001"
+title = "Первое сохранение завершает онбординг; PATCH меняет только присланные поля, null очищает имя и рабочее время, но не юзернейм"
+layer = "integration"
+domain = "users"
+
+[[scenario]]
+id = "USERS-PROFILE-002"
+title = "Юзернейм, часовой пояс и рабочее время проверяются; ночная смена допустима"
+layer = "integration"
+domain = "users"
+
+[[scenario]]
+id = "USERS-NAME-001"
+title = "Юзернейм уникален без учёта регистра; проверка занятости точна и после потери фильтра Блума, фильтр пересобирается"
+layer = "integration"
+domain = "users"
+
+[[scenario]]
+id = "USERS-SEARCH-001"
+title = "Человека находят по началу юзернейма и почты и по части имени; спецсимволы LIKE не работают как шаблон"
+layer = "integration"
+domain = "users"
+
+[[scenario]]
+id = "USERS-SEARCH-002"
+title = "Профиль по id и пачкой по списку id; неизвестные id пропускаются, без входа — 401"
+layer = "integration"
+domain = "users"
+
+[[scenario]]
+id = "USERS-PROFILE-003"
+title = "Свой профиль есть сразу после регистрации: до события он создаётся по почте из auth, позднее событие не создаёт дубль"
+layer = "integration"
+domain = "users"
+
+[[scenario]]
+id = "USERS-AVATAR-001"
+title = "Аватар загружается, отдаётся с долгим кэшем по адресу с версией, при замене старый объект удаляется, удаление убирает аватар"
+layer = "integration"
+domain = "users"
+
+[[scenario]]
+id = "USERS-AVATAR-002"
+title = "Аватар — PNG, JPEG или WebP не больше предела; тип проверяется по содержимому и должен совпадать с Content-Type"
+layer = "integration"
+domain = "users"

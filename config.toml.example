@@ -1,0 +1,36 @@
+[service]
+port = 8004
+
+[auth]
+jwks_url = "http://auth.apps:8001/.well-known/jwks.json"
+allowed_origins = ["http://localhost", "https://localhost"]
+
+[logging]
+level = "INFO"
+slow_request_ms = 1000
+
+[database]
+postgres_host = "postgres"
+postgres_port = 5432
+postgres_db = "users"
+postgres_username = "users"
+postgres_password = "change-me"
+
+[cache]
+host = "dragonfly"
+port = 6379
+password = "change-me"
+db = 0
+key_prefix = "users:"
+
+[tracing]
+otlp_endpoint = "http://alloy.infra:4318"
+
+[s3]
+endpoint_url = "http://seaweedfs.infra:8333"
+access_key = "users"
+secret_key = "change-me"
+bucket = "users"
+
+[rabbitmq]
+url = "amqp://users:change-me@rabbitmq.infra:5672/aiip"

@@ -1,0 +1,22 @@
+from dishka import Provider, Scope, provide
+from fastapi import Request
+
+from src.core.security.authenticator import SessionAuthenticator
+from src.core.security.dto import CurrentUser
+from src.core.security.enums import AuthCookie
+from src.core.security.live_sessions import LiveSessions
+from src.core.security.signing_keys import SigningKeys
+
+
+class SecurityProvider(Provider):
+    signing_keys = provide(SigningKeys, scope=Scope.APP)
+    live_sessions = provide(LiveSessions, scope=Scope.APP)
+    session_authenticator = provide(SessionAuthenticator, scope=Scope.REQUEST)
+
+    @provide(scope=Scope.REQUEST)
+    async def get_current_user(
+        self, request: Request, authenticator: SessionAuthenticator
+    ) -> CurrentUser:
+        return await authenticator.authenticate(
+            request.headers.get("authorization"), request.cookies.get(AuthCookie.ACCESS_TOKEN)
+        )
